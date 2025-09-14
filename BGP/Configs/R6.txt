@@ -1,0 +1,110 @@
+
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R6
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 172.16.5.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 172.16.4.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet2/0
+ ip address 172.16.6.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet3/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet4/0
+ no ip address
+ shutdown
+ duplex full
+!
+router ospf 2
+ network 172.16.6.0 0.0.0.255 area 0
+!
+router bgp 200
+ bgp log-neighbor-changes
+ neighbor 172.16.4.1 remote-as 400
+ neighbor 172.16.4.1 route-map BH in
+ neighbor 172.16.5.1 remote-as 300
+ neighbor 172.16.5.1 route-map BH in
+ neighbor 172.16.6.1 remote-as 200
+ neighbor 172.16.6.1 next-hop-self
+ neighbor 172.16.7.2 remote-as 200
+ neighbor 172.16.7.2 next-hop-self
+!
+ip forward-protocol nd
+!
+ip community-list standard BH permit 100
+!
+no ip http server
+no ip http secure-server
+!
+!
+route-map BH permit 10
+ match community BH
+ set ip next-hop 9.9.9.9
+!
+route-map BH permit 20
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end

@@ -1,0 +1,120 @@
+
+!
+! Last configuration change at 18:47:48 UTC Tue May 21 2024
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R13
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.0.0.1 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 172.16.1.1 255.255.255.0
+ duplex full
+!
+interface FastEthernet2/0
+ ip address 172.16.2.1 255.255.255.0
+ duplex full
+!
+interface FastEthernet3/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface FastEthernet4/0
+ no ip address
+ shutdown
+ duplex full
+!
+router ospf 1
+ redistribute bgp 500 subnets
+ network 10.0.0.0 0.0.0.255 area 0
+!
+router bgp 500
+ bgp log-neighbor-changes
+ redistribute ospf 1 route-map permit
+ neighbor 172.16.1.2 remote-as 300
+ neighbor 172.16.1.2 send-community
+ neighbor 172.16.1.2 route-map IRANACCESS out
+ neighbor 172.16.2.2 remote-as 400
+ neighbor 172.16.2.2 send-community
+ neighbor 172.16.2.2 route-map IRANACCESS out
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ip access-list standard IRANACCESS
+ permit 1.1.1.0 0.0.0.127
+ permit 1.1.1.128 0.0.0.127
+ip access-list standard permit
+ permit 1.1.1.0 0.0.0.255
+!
+!
+route-map IRANACCESS permit 10
+ match ip address IRANACCESS
+ set community 100
+!
+route-map IRANACCESS permit 20
+!
+route-map permit permit 10
+ match ip address permit
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end

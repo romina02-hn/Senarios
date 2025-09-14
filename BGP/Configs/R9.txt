@@ -1,0 +1,106 @@
+
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R9
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback20
+ ip address 2.2.2.1 255.255.255.0
+!
+interface FastEthernet0/0
+ ip address 172.16.1.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 172.16.3.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet2/0
+ ip address 172.16.10.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet3/0
+ ip address 172.16.5.1 255.255.255.0
+ duplex full
+!
+interface FastEthernet4/0
+ no ip address
+ shutdown
+ duplex full
+!
+router ospf 1
+ network 2.2.2.0 0.0.0.255 area 0
+ network 172.16.3.0 0.0.0.255 area 0
+ network 172.16.10.0 0.0.0.255 area 0
+!
+router bgp 300
+ bgp log-neighbor-changes
+ neighbor 3.3.3.1 remote-as 400
+ neighbor 3.3.3.1 ebgp-multihop 10
+ neighbor 3.3.3.1 update-source Loopback20
+ neighbor 172.16.1.1 remote-as 500
+ neighbor 172.16.1.1 send-community
+ neighbor 172.16.5.2 remote-as 200
+ neighbor 172.16.5.2 send-community
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end
