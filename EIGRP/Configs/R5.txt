@@ -1,0 +1,121 @@
+
+!
+! Last configuration change at 23:50:14 UTC Tue Dec 12 2023
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R5
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 8.8.8.8 255.255.255.0
+!
+interface Loopback1
+ ip address 10.0.0.1 255.255.255.0
+!
+interface Loopback2
+ ip address 10.0.1.1 255.255.255.0
+!
+interface Loopback3
+ ip address 10.0.4.1 255.255.255.0
+!
+interface Loopback4
+ ip address 40.0.0.1 255.255.255.0
+!
+interface Loopback5
+ no ip address
+!
+interface Loopback6
+ no ip address
+!
+interface Loopback7
+ no ip address
+!
+interface Loopback8
+ no ip address
+!
+interface Loopback9
+ no ip address
+!
+interface Loopback10
+ ip address 100.100.100.100 255.255.255.0
+!
+interface FastEthernet0/0
+ ip address 7.7.7.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+!
+router eigrp 1
+ network 7.7.7.0 0.0.0.255
+ network 8.8.8.8 0.0.0.0
+ network 10.0.0.0 0.0.0.255
+ network 10.0.1.0 0.0.0.255
+ network 10.0.4.0 0.0.0.255
+ network 40.0.0.0 0.0.0.255
+ network 100.100.100.100 0.0.0.0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end
