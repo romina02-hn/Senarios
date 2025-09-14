@@ -37,15 +37,4 @@ The lab simulates a real-world enterprise/service provider environment with mult
 - External route injection (Type-5 LSAs)  
 - OSPF neighbor adjacencies over different network types  
 
-## Sample Configurations
-#### R2 – External Redistribution into OSPF
-```cisco
-router ospf 1
- router-id 2.2.2.2
- network 10.0.0.0 0.255.255.255 area 0
- redistribute static subnets
-!
-ip route 100.10.1.0 255.255.255.0 Null0
-ip route 100.10.2.0 255.255.255.0 Null0
-ip route 100.10.3.0 255.255.255.0 Null0
-ip route 100.10.4.0 255.255.255.0 Null0
+
