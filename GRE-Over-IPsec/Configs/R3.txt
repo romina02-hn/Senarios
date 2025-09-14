@@ -1,0 +1,109 @@
+
+!
+! Last configuration change at 00:36:31 UTC Sun Apr 7 2024
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+!
+crypto isakmp policy 10
+ encr aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 3600
+crypto isakmp key cisco123 address 64.100.0.1     
+!
+!
+crypto ipsec transform-set GRE-IPSEC esp-aes 256 esp-sha256-hmac 
+ mode transport
+!
+crypto ipsec profile GRE-IPSEC-PRO
+ set transform-set GRE-IPSEC 
+!
+!
+!
+!
+!
+!
+!
+interface Tunnel1
+ ip address 172.16.1.3 255.255.255.0
+ ip mtu 1400
+ tunnel source 64.100.1.3
+ tunnel destination 64.100.0.1
+ tunnel protection ipsec profile GRE-IPSEC-PRO
+!
+interface FastEthernet0/0
+ ip address 64.100.1.3 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ ip address 10.10.4.3 255.255.255.0
+ duplex full
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ duplex full
+!
+router ospf 123
+ network 10.10.4.0 0.0.0.255 area 0
+ network 172.16.1.0 0.0.0.255 area 0
+ default-information originate
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 64.100.1.2
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end
