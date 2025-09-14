@@ -26,12 +26,3 @@ The lab simulates a real-world service provider environment with multiple Autono
 - **Local Preference & MED** for path selection
 - **AS-Path Prepending** to influence upstream routing
 
-### Sample Configurations
-#### Router in AS 65001 (R1)
-```cisco
-router bgp 65001
- bgp log-neighbor-changes
- neighbor 192.168.12.2 remote-as 65001
- neighbor 192.168.12.2 update-source Loopback0
- neighbor 10.10.23.2 remote-as 65002
- network 10.1.0.0 mask 255.255.255.0
